@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div class="page-top">
+        <div class="page-content">
+            <h2>任务计划列表</h2>
+        </div>
+    </div>
+    <div class="main">
+        <h3 class="big-title1">添加任务:</h3>
+        <input type="text"
+               placeholder="例如:南无阿弥陀佛; 提示: +回车键即可添加任务"
+               class="task-input"
+               v-model="todo"
+               v-on:keyup.enter="addTodo"
+        />
+        <ul class="task-count" v-show="list.length">
+            <li>{{ noCheckedLength }}一个任务未完成</li>
+            <li class="action">
+                <a class="active" href="#all">所有任务</a>
+                <a href="#unfinished">未完成的任务</a>
+                <a href="#finished">完成的任务</a>
+            </li>
+        </ul>
+        <h3 class="big-title2">任务列表: </h3>
+        <div class="task">
+            <span class="no-task-tip" v-show="!list.length">还没有添加任何任务</span>
+            <ul class="todo-list">
+                <li class="todo" :class="{completed: item.isChecked, editing: item === edtorTodos}" v-for="item in filteredList">
+                    <div class="view">
+                        <input type="checkbox" class="toggle" v-model="item.isChecked">
+                        <label @dblclick="edtorTodo(item)">{{ item.title }}</label>
+                        <button class="destroy" @click="deleteTodo(item)"></button>
+                    </div>
+                    <input v-focus="edtorTodos === item"
+                           type="text"
+                           class="edit"
+                           v-model="item.title"
+                           @blur="edtorTodoed(item)"
+                           @keyup.13="edtorTodoed(item)"
+                           @keyup.esc="cancelTodo(item)"
+                    />
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="todos.js"></script>
+</body>
+</html>
